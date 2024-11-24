@@ -1,37 +1,39 @@
-import { Controller, Get, HttpCode, Inject } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Header,
+  HttpCode,
+  Post,
+} from '@nestjs/common';
 import { UserService } from './user.service';
-import { Connection } from '../connection/connection';
-import { UserRepository } from '../user-repository/user-repository';
-import { MailService } from '../mail/mail.service';
+// import { Connection } from '../connection/connection';
+// import { MailService } from '../mail/mail.service';
+import { User } from '../user.interface';
+import { MessageService } from '../../helpers/message/message.service';
 
 @Controller('/api/user')
 export class UserController {
-	
-	// @Inject()
-	// private UserService:UserService;
-	// @Inject(Connection)
-	// private readonly connection: Connection;
+  // @Inject()
+  // private UserService:UserService;
+  // @Inject(Connection)
+  // private readonly connection: Connection;
 
-	constructor(
-		private UserService:UserService,
-		private connection:Connection,
-		private userRepository:UserRepository,
-		private mailserviceinject:MailService
-	){}
+  constructor(
+    private UserService: UserService,
+	private message: MessageService
+    // private connection: Connection,
+    // private mailserviceinject: MailService,
+  ) {}
 
-	// private userRepository:UserRepository
-
-	@Get('/_healthy')
-	@HttpCode(200)
-	UserHealthy(): Record<string, string>{ //
-		return this.UserService.Healthy();
-	}
-
-	@Get('/connection')
-	ConnectionController():string{
-		this.userRepository.save();
-		this.mailserviceinject.send();
-		return this.connection.getName();
-	}
-	
+  //create for users
+  @Post()
+  @HttpCode(200)
+  @Header('Content-Type', 'application/json')
+  async createController(@Body() data: User): Promise<Record<string, any>> {
+      const response = await this.UserService.Create(data);
+      return {
+		...this.message.Success(),
+		data:response
+	  };
+  }
 }

@@ -8,7 +8,7 @@ describe('UserController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
-      providers:[UserService]
+      providers: [UserService],
     }).compile();
 
     controller = module.get<UserController>(UserController);
@@ -17,10 +17,5 @@ describe('UserController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-
-  it('should be healthy', () => {
-    expect(controller.UserHealthy()).toBeDefined()
-    expect(typeof controller.UserHealthy()).toBe('object')
-  })
 
 });
