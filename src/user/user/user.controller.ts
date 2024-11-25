@@ -1,15 +1,10 @@
-import {
-  Body,
-  Controller,
-  Header,
-  HttpCode,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Header, HttpCode, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 // import { Connection } from '../connection/connection';
 // import { MailService } from '../mail/mail.service';
-import { User } from '../user.interface';
 import { MessageService } from '../../helpers/message/message.service';
+import { ValidationPipe } from 'src/validation/validation.pipe';
+import { createUserSchema } from 'src/model/create-user.model';
 
 @Controller('/api/user')
 export class UserController {
@@ -20,7 +15,7 @@ export class UserController {
 
   constructor(
     private UserService: UserService,
-	private message: MessageService
+    private message: MessageService,
     // private connection: Connection,
     // private mailserviceinject: MailService,
   ) {}
@@ -29,11 +24,13 @@ export class UserController {
   @Post()
   @HttpCode(200)
   @Header('Content-Type', 'application/json')
-  async createController(@Body() data: User): Promise<Record<string, any>> {
-      const response = await this.UserService.Create(data);
-      return {
-		...this.message.Success(),
-		data:response
-	  };
+  async createController(
+    @Body(new ValidationPipe(createUserSchema)) data: any,
+  ): Promise<Record<string, any>> {
+    const response = await this.UserService.Create(data);
+    return {
+      ...this.message.Success(),
+      data: response,
+    };
   }
 }

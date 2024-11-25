@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -9,6 +14,9 @@ import { ValidationModule } from './validation/validation.module';
 import { HelpersModule } from './helpers/helpers.module';
 import * as winston from 'winston';
 import * as moment from 'moment';
+import { LogMiddleware } from './middleware/log/log.middleware';
+import { APP_FILTER } from '@nestjs/core';
+import { ErrorFilter } from './filter/error/error.filter';
 
 @Module({
   imports: [
@@ -34,6 +42,19 @@ import * as moment from 'moment';
     HelpersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: ErrorFilter,
+    },
+  ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LogMiddleware).forRoutes({
+      path: '/api/*',
+      method: RequestMethod.ALL,
+    });
+  }
+}
