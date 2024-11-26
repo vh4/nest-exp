@@ -8,6 +8,20 @@ export class UserRepository {
   async save(user: User): Promise<User> {
     return this.db.users.create({
       data: user,
+    });//
+  }
+  async findExistingUser(username: string, email: string): Promise<User> {
+    return this.db.users.findFirst({
+      where: {
+        OR: [
+          {
+            username: username,
+          },
+          {
+            email: email,
+          },
+        ],
+      },
     });
   }
 }

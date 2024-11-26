@@ -5,8 +5,8 @@ declare global {
     interface Request {
       payload: {
         timestamp?: string | Date;
-        mid?: string,
-        response?: object
+        mid?: string;
+        response?: object;
       };
     }
   }

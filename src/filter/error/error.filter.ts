@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { CustomError } from 'src/helpers/error-handler-custom/error-handler-custom.service';
 import { MessageService } from 'src/helpers/message/message.service';
 import { Logger } from 'winston';
 import { ZodError } from 'zod';
@@ -24,9 +25,15 @@ export class ErrorFilter implements ExceptionFilter {
     const req = http.getRequest<Request>();
 
     let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-    let responseMessage = this.message.SystemMalfunction();
+    let responseMessage:object;
 
-    if (exception instanceof ZodError) {
+    if (exception instanceof CustomError) {
+      statusCode = exception.status;
+      responseMessage = {
+        responseCode: exception.response_code,
+        responseMessage: exception.response_message,
+      };
+    } else if (exception instanceof ZodError) {
       statusCode = HttpStatus.BAD_REQUEST;
       responseMessage = this.message.FormatError();
     } else if (exception instanceof TypeError) {
@@ -40,14 +47,18 @@ export class ErrorFilter implements ExceptionFilter {
       responseMessage = this.message.SystemMalfunction();
     }
 
-    this.logger.error(`request   / ${req.payload.mid} -> ${JSON.stringify(req.body)}`);
+    this.logger.error(
+      `request   / ${req.payload.mid} -> ${JSON.stringify(req.body)}`,
+    );
     this.logger.error(`error     / ${req.payload.mid} -> ${exception.message}`);
-    this.logger.error(`response  / ${req.payload.mid} -> ${JSON.stringify(req.payload?.response ?? '-')}`);
+    this.logger.error(
+      `response  / ${req.payload.mid} -> ${JSON.stringify(req.payload?.response ?? '-')}`,
+    );
 
     res.status(statusCode).json({
       ...responseMessage,
       ...req.body,
-      timestamp:req.payload?.timestamp
+      timestamp: req.payload?.timestamp,
     });
   }
 }

@@ -1,4 +1,12 @@
-import { Body, Controller, Header, HttpCode, Post, Req, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Header,
+  HttpCode,
+  Post,
+  Req,
+  UsePipes,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 // import { Connection } from '../connection/connection';
 // import { MailService } from '../mail/mail.service';
@@ -42,6 +50,4 @@ export class UserController {
 
     return response;
   }
-  
 }
- 

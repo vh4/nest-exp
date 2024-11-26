@@ -50,7 +50,8 @@ import { SuccessInterceptor } from './interceptor/success/success.interceptor';
     {
       provide: APP_FILTER, //global filter
       useClass: ErrorFilter,
-    },{
+    },
+    {
       provide: APP_INTERCEPTOR, //global interceptor
       useClass: TimeInterceptor,
     },
@@ -61,7 +62,7 @@ import { SuccessInterceptor } from './interceptor/success/success.interceptor';
     {
       provide: APP_INTERCEPTOR,
       useClass: SuccessInterceptor,
-    }
+    },
   ],
 })
 export class AppModule implements NestModule {

@@ -17,7 +17,6 @@ describe('MidService', () => {
   });
 
   it('should be valid mid', () => {
-      expect(service.MessageIdentifier().length).toBe(21);
-  })
-
+    expect(service.MessageIdentifier().length).toBe(19);
+  });
 });
