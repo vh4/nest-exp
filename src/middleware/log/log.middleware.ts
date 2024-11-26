@@ -7,7 +7,7 @@ import { Logger } from 'winston';
 export class LogMiddleware implements NestMiddleware<Request, Response> {
   constructor(@Inject(WINSTON_MODULE_PROVIDER) private logger: Logger) {}
   use(req: any, res: any, next: () => void) {
-    this.logger.info(`running in middlware`);
+    // this.logger.info(`running in middlware`);
     next();
   }
 }

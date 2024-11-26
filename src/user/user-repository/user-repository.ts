@@ -6,7 +6,7 @@ import { User } from '../user.interface';
 export class UserRepository {
   constructor(private db: PrismaService) {}
   async save(user: User): Promise<User> {
-    return await this.db.users.create({
+    return this.db.users.create({
       data: user,
     });
   }

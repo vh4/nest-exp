@@ -5,7 +5,7 @@ import {
   HttpStatus,
   Inject,
 } from '@nestjs/common';
-import e, { Response } from 'express';
+import { Response, Request } from 'express';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { MessageService } from 'src/helpers/message/message.service';
 import { Logger } from 'winston';
@@ -21,6 +21,7 @@ export class ErrorFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const http = host.switchToHttp();
     const res = http.getResponse<Response>();
+    const req = http.getRequest<Request>();
 
     let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
     let responseMessage = this.message.SystemMalfunction();
@@ -39,7 +40,14 @@ export class ErrorFilter implements ExceptionFilter {
       responseMessage = this.message.SystemMalfunction();
     }
 
-    this.logger.error(`ERROR -> ${exception.message}`);
-    res.status(statusCode).json(responseMessage);
+    this.logger.error(`request   / ${req.payload.mid} -> ${JSON.stringify(req.body)}`);
+    this.logger.error(`error     / ${req.payload.mid} -> ${exception.message}`);
+    this.logger.error(`response  / ${req.payload.mid} -> ${JSON.stringify(req.payload?.response ?? '-')}`);
+
+    res.status(statusCode).json({
+      ...responseMessage,
+      ...req.body,
+      timestamp:req.payload?.timestamp
+    });
   }
 }

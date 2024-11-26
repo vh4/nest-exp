@@ -15,8 +15,11 @@ import { HelpersModule } from './helpers/helpers.module';
 import * as winston from 'winston';
 import * as moment from 'moment';
 import { LogMiddleware } from './middleware/log/log.middleware';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ErrorFilter } from './filter/error/error.filter';
+import { TimeInterceptor } from './interceptor/time/time.interceptor';
+import { MidInterceptor } from './interceptor/mid/mid.interceptor';
+import { SuccessInterceptor } from './interceptor/success/success.interceptor';
 
 @Module({
   imports: [
@@ -45,9 +48,20 @@ import { ErrorFilter } from './filter/error/error.filter';
   providers: [
     AppService,
     {
-      provide: APP_FILTER,
+      provide: APP_FILTER, //global filter
       useClass: ErrorFilter,
+    },{
+      provide: APP_INTERCEPTOR, //global interceptor
+      useClass: TimeInterceptor,
     },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: MidInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: SuccessInterceptor,
+    }
   ],
 })
 export class AppModule implements NestModule {
