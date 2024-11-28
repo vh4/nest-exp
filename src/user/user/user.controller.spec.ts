@@ -11,7 +11,7 @@ describe('UserController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [PrismaModule], 
+      imports: [PrismaModule],
       controllers: [UserController],
       providers: [
         UserService,

@@ -9,3 +9,10 @@ export interface User {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface UserSelect {
+  name: string;
+  username: string;
+  email: string;
+  picture?: string;
+}

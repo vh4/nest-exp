@@ -25,7 +25,7 @@ export class ErrorFilter implements ExceptionFilter {
     const req = http.getRequest<Request>();
 
     let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-    let responseMessage:object;
+    let responseMessage: object;
 
     if (exception instanceof CustomError) {
       statusCode = exception.status;

@@ -20,6 +20,7 @@ import { ErrorFilter } from './filter/error/error.filter';
 import { TimeInterceptor } from './interceptor/time/time.interceptor';
 import { MidInterceptor } from './interceptor/mid/mid.interceptor';
 import { SuccessInterceptor } from './interceptor/success/success.interceptor';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { SuccessInterceptor } from './interceptor/success/success.interceptor';
     PrismaModule,
     ValidationModule,
     HelpersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [

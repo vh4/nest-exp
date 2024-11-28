@@ -10,7 +10,7 @@ export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly message: MessageService,
-    private readonly err:ErrorHandlerCustomService
+    private readonly err: ErrorHandlerCustomService,
   ) {}
 
   async Create(user: User): Promise<Record<string, any>> {
@@ -20,11 +20,7 @@ export class UserService {
     );
     if (isExist) {
       const error = this.message.DuplicateTransaction();
-      this.err.throwError(
-        400,
-        error.responseCode,
-        error.responseMessage,
-      );
+      this.err.throwError(400, error.responseCode, error.responseMessage);
     }
     user.password = await bcrypt.hash(user.password, 10);
     const resp = await this.userRepository.save(user);

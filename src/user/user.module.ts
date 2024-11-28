@@ -8,7 +8,6 @@ import {
 } from './connection/connection';
 import { MailService, mailServiceInject } from './mail/mail.service';
 import { UserRepository } from './user-repository/user-repository';
-import { PrismaModule } from 'src/prisma/prisma.module';
 
 @Module({
   imports: [],

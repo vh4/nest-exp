@@ -8,7 +8,11 @@ export class ErrorHandlerCustomService {
    * @param response_code Application-specific response code
    * @param response_message Error message
    */
-  throwError(status: number, response_code: string, response_message: string): void {
+  throwError(
+    status: number,
+    response_code: string,
+    response_message: string,
+  ): void {
     throw new CustomError(status, response_code, response_message);
   }
 }
