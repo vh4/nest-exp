@@ -13,7 +13,7 @@ import { UserService } from './user.service';
 import { MessageService } from '../../helpers/message/message.service';
 import { ValidationPipe } from 'src/validation/validation.pipe';
 import { createUserSchema } from 'src/model/create-user.model';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 
 @Controller('/api/user')
 export class UserController {
