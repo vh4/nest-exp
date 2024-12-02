@@ -8,6 +8,7 @@ export const createUserSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6).max(100),
   picture: z.string().optional(),
+  roles: z.string().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
 });

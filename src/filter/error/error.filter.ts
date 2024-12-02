@@ -2,8 +2,10 @@ import {
   ArgumentsHost,
   Catch,
   ExceptionFilter,
+  ForbiddenException,
   HttpStatus,
   Inject,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
@@ -39,11 +41,14 @@ export class ErrorFilter implements ExceptionFilter {
     } else if (exception instanceof TypeError) {
       statusCode = HttpStatus.BAD_REQUEST;
       responseMessage = this.message.FormatError();
-    } else if (exception instanceof Error) {
+     }else if(exception instanceof ForbiddenException){
+      statusCode = HttpStatus.FORBIDDEN;
+      responseMessage = this.message.TransactionNotPermittedToTerminal();
+    } else if (exception instanceof Error) { //paling akhir urutanya agar exeption lain ke handle
       statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
       responseMessage = this.message.SystemMalfunction();
-    } else {
-      statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+    }  else { //paling akhir urutanya agar exeption lain ke handle
+      statusCode = HttpStatus.INTERNAL_SERVER_ERROR; 
       responseMessage = this.message.SystemMalfunction();
     }
 

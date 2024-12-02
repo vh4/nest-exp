@@ -6,6 +6,7 @@ import {
   HttpCode,
   Post,
   Req,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -16,6 +17,8 @@ import { ValidationPipe } from 'src/validation/validation.pipe';
 import { createUserSchema } from 'src/model/create-user.model';
 import { Request } from 'express';
 import { User } from '../user.interface';
+import { RoleGuard } from 'src/role/role.guard';
+import { Roles } from 'src/decorator/auth/auth.decorator';
 
 @Controller('/api/user')
 export class UserController {
@@ -55,6 +58,8 @@ export class UserController {
 
   @Get()
   @HttpCode(200)
+  @UseGuards(RoleGuard)
+  @Roles('admin')
   @Header('Content-Type', 'application/json')
   async All(@Req() req:Request): Promise<Record<string, string|User[]>>{
     const response = await this.UserService.getAllData();

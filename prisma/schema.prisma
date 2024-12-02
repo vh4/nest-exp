@@ -15,6 +15,7 @@ model Users {
   email      String   @unique @db.VarChar(100)
   password   String   @db.VarChar(100)
   picture    String?  @db.VarChar(255)
+  roles       String?  @db.VarChar(10)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   posts      Post[]

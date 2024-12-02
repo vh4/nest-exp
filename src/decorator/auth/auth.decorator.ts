@@ -1,9 +1,3 @@
-import { createParamDecorator, ExecutionContext, SetMetadata } from '@nestjs/common';
-import { Request } from 'express';
-import { AuthMiddleware } from 'src/middleware/auth/auth.middleware';
+import { SetMetadata } from '@nestjs/common';
 
-export const Auth = createParamDecorator(
-	(data:unknown, ctx:ExecutionContext) => {
-		const request = ctx.switchToHttp().getRequest<Request>();
-		return request.user;
-	})
+export const Roles = (...roles: string[]) => SetMetadata('roles', roles);

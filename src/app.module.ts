@@ -85,6 +85,12 @@ export class AppModule implements NestModule {
     // Apply AuthMiddleware only to specific routes
     consumer
       .apply(AuthMiddleware)
+      .exclude(
+        {
+          path: '/api/user',
+          method: RequestMethod.POST,
+        },
+      )
       .forRoutes({
         path: '/api/user/*',
         method: RequestMethod.ALL,
