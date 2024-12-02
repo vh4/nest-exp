@@ -48,17 +48,17 @@ export class ErrorFilter implements ExceptionFilter {
     }
 
     this.logger.error(
-      `request   / ${req.payload.mid} -> ${JSON.stringify(req.body)}`,
+      `request   / ${req.mid} -> header -> ${JSON.stringify(req.headers)} body -> ${JSON.stringify(req.body)}`,
     );
-    this.logger.error(`error     / ${req.payload.mid} -> ${exception.message}`);
+    this.logger.error(`error     / ${req.mid} -> ${exception.message}`);
     this.logger.error(
-      `response  / ${req.payload.mid} -> ${JSON.stringify(req.payload?.response ?? '-')}`,
+      `response  / ${req.mid} -> ${JSON.stringify(req.response ?? '-')}`,
     );
 
     res.status(statusCode).json({
       ...responseMessage,
       ...req.body,
-      timestamp: req.payload?.timestamp,
+      timestamp: req.timestamp,
     });
   }
 }

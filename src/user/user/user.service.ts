@@ -26,4 +26,8 @@ export class UserService {
     const resp = await this.userRepository.save(user);
     return resp;
   }
+  async getAllData(): Promise<User[]>{
+    const allData = await this.userRepository.allDataModel();
+    return allData;
+  }
 }

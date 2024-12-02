@@ -24,4 +24,7 @@ export class UserRepository {
       },
     });
   }
+  async allDataModel(): Promise<User[]>{
+    return this.db.users.findMany();
+  }
 }

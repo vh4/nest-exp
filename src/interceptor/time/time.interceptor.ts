@@ -11,12 +11,7 @@ import { Observable } from 'rxjs';
 export class TimeInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req = context.switchToHttp().getRequest<Request>();
-
-    if (!req.payload) {
-      req.payload = {};
-    }
-
-    req.payload.timestamp = new Date();
+    req.timestamp = new Date();
 
     return next.handle();
   }

@@ -17,14 +17,14 @@ export class SuccessInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req = context.switchToHttp().getRequest<Request>();
-    const mid = req.payload.mid;
+    const mid = req.mid;
     return next.handle().pipe(
       tap(() => {
         this.logger.warn(
           `success / ${mid} / request  -> ${JSON.stringify(req.body)}`,
         );
         this.logger.warn(
-          `success / ${mid} / response -> ${JSON.stringify(req.payload?.response) ?? '-'}`,
+          `success / ${mid} / response -> ${JSON.stringify(req.response) ?? '-'}`,
         );
       }),
     );

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Header,
   HttpCode,
   Post,
@@ -14,6 +15,7 @@ import { MessageService } from '../../helpers/message/message.service';
 import { ValidationPipe } from 'src/validation/validation.pipe';
 import { createUserSchema } from 'src/model/create-user.model';
 import { Request } from 'express';
+import { User } from '../user.interface';
 
 @Controller('/api/user')
 export class UserController {
@@ -46,8 +48,20 @@ export class UserController {
       data: create,
     };
 
-    req.payload.response = response;
+    req.response = response;
 
     return response;
+  }
+
+  @Get()
+  @HttpCode(200)
+  @Header('Content-Type', 'application/json')
+  async All(@Req() req:Request): Promise<Record<string, string|User[]>>{
+    const response = await this.UserService.getAllData();
+    req.response = response;
+    return {
+      ...this.message.Success(),
+      data:response
+    }
   }
 }

@@ -20,7 +20,7 @@ export class AuthController {
     @Req() req: Request,
   ): Promise<Record<string, string | number>> {
     const resp = await this.authService.login(dto);
-    req.payload.response = resp;
+    req.response = resp;
     return {
       ...this.message.Success(),
       ...resp,

@@ -1,14 +1,11 @@
-import { Request, Response } from 'express';
+import { Request } from 'express';
 
-declare global {
-  namespace Express {
-    interface Request {
-      payload: {
-        timestamp?: string | Date;
-        mid?: string;
-        response?: object;
-      };
-    }
+declare module 'express' {
+  export interface Request {
+    user?:object,
+    mid?:string, // manaya harus unique
+    timestamp?: string | Date,
+    response?: object // manaya harus unique
   }
 }
 
